@@ -36,8 +36,8 @@ export default function ProductGrid({
           <ProductCard
             key={product.id}
             product={product}
-            onEdit={handleEditProduct}
-            onDelete={handleDeleteProduct}
+            onEdit={() => handleEditProduct(product)}
+            onDelete={() => handleDeleteProduct(product)}
           />
         ))}
       </div>

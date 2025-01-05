@@ -7,12 +7,12 @@ export interface User {
 }
 
 export interface Product {
-  id: number;
+  id?: number;
   title: string;
   description: string;
   price: number;
-  thumbnail: string;
-  category: string;
+  thumbnail?: string;
+  category?: string;
 }
 
 export interface AuthState {

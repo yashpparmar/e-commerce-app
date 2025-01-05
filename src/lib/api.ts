@@ -22,6 +22,18 @@ export async function searchProducts(
   return response.json();
 }
 
+export async function addProduct(data: Product) {
+  const response = await fetch(`${API_URL}/products/add`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error('Failed to add product');
+  return response.json();
+}
+
 export async function updateProduct(id: number, data: Partial<Product>) {
   const response = await fetch(`${API_URL}/products/${id}`, {
     method: 'PUT',

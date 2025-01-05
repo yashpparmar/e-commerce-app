@@ -11,9 +11,10 @@ interface ProductModalProps {
 }
 
 export interface ProductForm {
-  id: number | string;
   title: string;
+  category: string;
   price: number;
+  image?: string;
   description: string;
 }
 
@@ -24,22 +25,37 @@ const ProductModal: React.FC<ProductModalProps> = ({
   onSave,
 }) => {
   const [formData, setFormData] = useState<ProductForm>({
-    id: 0,
     title: '',
+    category: '',
     price: 0,
     description: '',
+    image: '',
   });
 
   useEffect(() => {
     if (product) {
-      setFormData(product);
+      setFormData({
+        title: product.title || '',
+        category: product.category || '',
+        price: product.price || 0,
+        description: product.description || '',
+        image: product.thumbnail || '',
+      });
     } else {
-      setFormData({ id: '', title: '', price: 0, description: '' });
+      setFormData({
+        title: '',
+        price: 0,
+        description: '',
+        category: '',
+        image: '',
+      });
     }
   }, [product]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -97,6 +113,29 @@ const ProductModal: React.FC<ProductModalProps> = ({
               placeholder="Enter product title"
             />
           </div>
+          {/* Totdo: add image upload */}
+          {/* <div className="space-y-2">
+            <label
+              htmlFor="categories"
+              className="block text-sm font-medium text-gray-700"
+            >
+              category
+            </label>
+            <div className="mt-1">
+              <select
+                id="categories"
+                name="category"
+                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-black focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                value={formData.category}
+                onChange={handleChange}
+              >
+                <option value="">Select category</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div> */}
 
           <div className="space-y-2">
             <label

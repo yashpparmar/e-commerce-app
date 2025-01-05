@@ -80,7 +80,6 @@ const SignupForm = () => {
                   value={formData.fullName}
                   onChange={handleChange}
                   placeholder="Full Name"
-                  required
                 />
                 {errors.fullName && (
                   <p className="mt-2 text-sm text-red-600">{errors.fullName}</p>
@@ -104,7 +103,6 @@ const SignupForm = () => {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="Email"
-                  required
                 />
                 {errors.email && (
                   <p className="mt-2 text-sm text-red-600">{errors.email}</p>
@@ -128,7 +126,6 @@ const SignupForm = () => {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="Password"
-                  required
                 />
                 {errors.password && (
                   <p className="mt-2 text-sm text-red-600">{errors.password}</p>
@@ -148,7 +145,6 @@ const SignupForm = () => {
                   id="confirmPassword"
                   name="confirmPassword"
                   type="password"
-                  required
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 text-black focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   value={formData.confirmPassword}
                   onChange={handleChange}
@@ -176,7 +172,6 @@ const SignupForm = () => {
                   className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-black focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   value={formData.gender}
                   onChange={handleChange}
-                  required
                 >
                   <option value="">Select gender</option>
                   <option value="male">Male</option>
@@ -204,7 +199,7 @@ const SignupForm = () => {
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 text-black focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   value={formData.mobile}
                   onChange={handleChange}
-                  required
+                  placeholder="Mobile Number"
                 />
                 {errors.mobile && (
                   <p className="mt-2 text-sm text-red-600">{errors.mobile}</p>

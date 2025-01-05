@@ -38,6 +38,10 @@ export const useValidation = () => {
           'Password must have 8+ chars, uppercase, lowercase, and special char';
       }
 
+      if (!formData.confirmPassword) {
+        newErrors.confirmPassword = 'Confirm password is required';
+      }
+
       if (formData.password !== formData.confirmPassword) {
         newErrors.confirmPassword = 'Passwords must match';
       }
