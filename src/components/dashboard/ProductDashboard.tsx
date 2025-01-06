@@ -10,7 +10,8 @@ import Pagination from './Pagination';
 import { Product } from '@/types';
 import { RootState } from '@/store';
 import {
-  addNewProduct,
+  updateProduct as updateProductAction,
+  addProduct as addNewProduct,
   removeProduct,
   setProduct,
 } from '@/store/slices/productSlice';
@@ -19,6 +20,7 @@ import {
   deleteProduct,
   fetchProducts,
   searchProducts,
+  updateProduct,
 } from '@/lib/api';
 
 const ProductDashboard = () => {
@@ -67,13 +69,19 @@ const ProductDashboard = () => {
     router.push(`/dashboard?${params.toString()}`);
   };
 
-  const handleAddProduct = async (product: ProductForm) => {
+  const handleAddAndUpdateProduct = async (product: ProductForm) => {
     try {
       setIsLoading(true);
-      const response = await addProduct(product);
-      dispatch(addNewProduct(response));
+      let response: Product;
+      if (selectedProduct && selectedProduct.id !== undefined) {
+        response = await updateProduct(selectedProduct.id, product);
+        dispatch(updateProductAction(response));
+      } else {
+        response = await addProduct(product);
+        dispatch(addNewProduct(response));
+      }
     } catch (err) {
-      setError('Failed to add product');
+      setError('Failed to add or update product');
     } finally {
       setIsLoading(false);
     }
@@ -146,7 +154,7 @@ const ProductDashboard = () => {
           setIsModalOpen(false);
           setSelectedProduct(null);
         }}
-        onSave={handleAddProduct}
+        onSave={handleAddAndUpdateProduct}
       />
     </>
   );

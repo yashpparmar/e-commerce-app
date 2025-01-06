@@ -53,3 +53,9 @@ export async function deleteProduct(id: number) {
   if (!response.ok) throw new Error('Failed to delete product');
   return response.json();
 }
+
+export async function fetchCategories() {
+  const response = await fetch(`${API_URL}/products/categories`);
+  if (!response.ok) throw new Error('Failed to fetch categories');
+  return response.json();
+}

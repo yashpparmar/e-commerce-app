@@ -1,7 +1,8 @@
 'use client';
 
+import { fetchCategories } from '@/lib/api';
 import { Product } from '@/types';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 
 interface ProductModalProps {
   product: Product | null;
@@ -10,11 +11,16 @@ interface ProductModalProps {
   onSave: (product: ProductForm) => void;
 }
 
+interface Categories {
+  name: string;
+  slug: string;
+  url: string;
+}
 export interface ProductForm {
   title: string;
   category: string;
   price: number;
-  image?: string;
+  thumbnail?: string;
   description: string;
 }
 
@@ -29,8 +35,9 @@ const ProductModal: React.FC<ProductModalProps> = ({
     category: '',
     price: 0,
     description: '',
-    image: '',
+    thumbnail: '',
   });
+  const [categories, setCategories] = useState<Categories[]>([]);
 
   useEffect(() => {
     if (product) {
@@ -39,7 +46,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
         category: product.category || '',
         price: product.price || 0,
         description: product.description || '',
-        image: product.thumbnail || '',
+        thumbnail: product.thumbnail || '',
       });
     } else {
       setFormData({
@@ -47,9 +54,15 @@ const ProductModal: React.FC<ProductModalProps> = ({
         price: 0,
         description: '',
         category: '',
-        image: '',
+        thumbnail: '',
       });
     }
+
+    const fetchAndSetCategories = async () => {
+      const response = await fetchCategories();
+      setCategories(response);
+    };
+    fetchAndSetCategories();
   }, [product]);
 
   const handleChange = (
@@ -61,9 +74,19 @@ const ProductModal: React.FC<ProductModalProps> = ({
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setFormData((prev) => ({
+        ...prev,
+        thumbnail: URL.createObjectURL(file),
+      }));
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(formData);
+    onSave({ ...formData, price: Number(formData.price) });
     onClose();
   };
 
@@ -113,13 +136,13 @@ const ProductModal: React.FC<ProductModalProps> = ({
               placeholder="Enter product title"
             />
           </div>
-          {/* Totdo: add image upload */}
-          {/* <div className="space-y-2">
+
+          <div className="space-y-2">
             <label
               htmlFor="categories"
               className="block text-sm font-medium text-gray-700"
             >
-              category
+              Category
             </label>
             <div className="mt-1">
               <select
@@ -130,12 +153,14 @@ const ProductModal: React.FC<ProductModalProps> = ({
                 onChange={handleChange}
               >
                 <option value="">Select category</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
+                {categories.map((category, index) => (
+                  <option key={index} value={category.slug}>
+                    {category.name}
+                  </option>
+                ))}
               </select>
             </div>
-          </div> */}
+          </div>
 
           <div className="space-y-2">
             <label
@@ -159,6 +184,24 @@ const ProductModal: React.FC<ProductModalProps> = ({
                 placeholder="0.00"
               />
             </div>
+          </div>
+
+          <div className="space-y-2">
+            <label
+              htmlFor="image"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Image
+            </label>
+            <input
+              type="file"
+              id="image"
+              name="image"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Enter image URL"
+            />
           </div>
 
           <div className="space-y-2">

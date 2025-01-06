@@ -25,7 +25,7 @@ const productSlice = createSlice({
       state.skip = action.payload.skip;
       state.limit = action.payload.limit;
     },
-    addNewProduct(state, action: PayloadAction<Product>) {
+    addProduct(state, action: PayloadAction<Product>) {
       state.products.push(action.payload);
     },
     removeProduct(state, action: PayloadAction<number>) {
@@ -44,7 +44,7 @@ const productSlice = createSlice({
   },
 });
 
-export const { setProduct, addNewProduct, removeProduct, updateProduct } =
+export const { setProduct, addProduct, removeProduct, updateProduct } =
   productSlice.actions;
 
 export default productSlice.reducer;
