@@ -22,7 +22,7 @@ export async function searchProducts(
   return response.json();
 }
 
-export async function addProduct(data: Product) {
+export async function addProduct(data: Omit<Product, 'id'>) {
   const response = await fetch(`${API_URL}/products/add`, {
     method: 'POST',
     headers: {

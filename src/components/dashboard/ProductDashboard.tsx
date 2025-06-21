@@ -29,6 +29,9 @@ const ProductDashboard = () => {
   const dispatch = useDispatch();
   const products = useSelector((state: RootState) => state.product.products);
   const totalProducts = useSelector((state: RootState) => state.product.total);
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -125,15 +128,17 @@ const ProductDashboard = () => {
   return (
     <>
       <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <SearchBar onSearch={handleSearch} initialValue={searchQuery} />
-          <button
-            className="px-4 py-2 bg-blue-500 text-white rounded-md shadow-md"
-            onClick={() => setIsModalOpen(true)}
-          >
-            Add Product
-          </button>
-        </div>
+        {isAuthenticated ? (
+          <div className="flex justify-between items-center">
+            <SearchBar onSearch={handleSearch} initialValue={searchQuery} />
+            <button
+              className="px-4 py-2 bg-blue-500 text-white rounded-md shadow-md"
+              onClick={() => setIsModalOpen(true)}
+            >
+              Add Product
+            </button>
+          </div>
+        ) : null}
         <ProductGrid
           products={products}
           isLoading={isLoading}
